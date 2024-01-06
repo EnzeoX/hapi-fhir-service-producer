@@ -1,8 +1,8 @@
 package com.job.testsender.config;
 
 import com.job.testsender.config.interceptor.TokenInterceptor;
+import com.job.testsender.utils.TokenWrapper;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -11,10 +11,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(bearerTokenInterceptor());
+        registry.addInterceptor(new TokenInterceptor(new TokenWrapper())).addPathPatterns("/api/v1/process-bundle");
     }
 
-    private HandlerInterceptor bearerTokenInterceptor() {
-        return new TokenInterceptor();
-    }
 }

@@ -1,8 +1,9 @@
-package com.job.testsender.service;
+package com.job.testsender.utils;
 
 import com.job.testsender.entity.User;
 import io.jsonwebtoken.*;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @AllArgsConstructor
+@ConditionalOnExpression("${security.jwt.enabled} and not ${security.simple-token.enabled}")
 public class JwtUtils {
 
     private final String secret_key = "SuperSecretKey";

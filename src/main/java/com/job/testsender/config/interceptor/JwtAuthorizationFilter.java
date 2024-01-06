@@ -1,8 +1,9 @@
 package com.job.testsender.config.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.job.testsender.service.JwtUtils;
+import com.job.testsender.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@ConditionalOnExpression("${security.jwt.enabled} and not ${security.simple-token.enabled}")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtil;

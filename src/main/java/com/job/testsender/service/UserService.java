@@ -5,6 +5,7 @@ import com.job.testsender.exception.UserNotFoundException;
 import com.job.testsender.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
+@ConditionalOnExpression("${security.jwt.enabled} and not ${security.simple-token.enabled}")
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;

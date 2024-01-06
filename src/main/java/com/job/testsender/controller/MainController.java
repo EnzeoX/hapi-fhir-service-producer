@@ -16,6 +16,11 @@ public class MainController {
 
     private final FhirBundleMessageHandler fhirBundleMessageHandler;
 
+    @GetMapping
+    public ResponseEntity<String> getInfo() {
+        return ResponseEntity.status(200).body("Working");
+    }
+
     @PostMapping(value = "process-bundle", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> acquireMessage(@NonNull @RequestBody String message) {
         this.fhirBundleMessageHandler.collectAndProcessBundle(message);

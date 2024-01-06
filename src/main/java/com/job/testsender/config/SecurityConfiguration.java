@@ -2,6 +2,7 @@ package com.job.testsender.config;
 
 import com.job.testsender.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
+@ConditionalOnExpression("${security.jwt.enabled} and not ${security.simple-token.enabled}")
 public class SecurityConfiguration {
 
     private final UserService userService;
@@ -33,7 +35,7 @@ public class SecurityConfiguration {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/api/auth").permitAll()
+//                .requestMatchers("/api/auth").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

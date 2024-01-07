@@ -22,7 +22,7 @@ public class TokenWrapper {
         contextPathTokens.put("/api/v1/process-bundle", "ProvidedTokenForBundleProcessing");
     }
 
-    public String getTokenForPath(@NotNull String contextPath) {
+    public String getTokenForPath(@NotNull(message = "Context path not provided") String contextPath) {
         return contextPathTokens.get(contextPath);
     }
 }

@@ -1,7 +1,6 @@
 package com.job.testsender.config.interceptor;
 
 import com.job.testsender.utils.TokenWrapper;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -9,7 +8,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
 import static com.job.testsender.utils.TokenWrapper.AUTH_HEADER;
@@ -23,14 +21,14 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws AuthenticationException {
-        if (request.getHeader(AUTH_HEADER).length() > 6) {
-            String requestToken = request.getHeader(AUTH_HEADER).substring(BEARER.length());
-            if (Objects.requireNonNull(tokenWrapper.getTokenForPath(request.getServletPath()), "No token for provided URI")
-                    .equals(requestToken)) {
-                return true;
-            }
+        if (request.getHeader(AUTH_HEADER).length() < 7) {
+            throw new NullPointerException("Provided authorization header is null or empty");
+        }
+        String requestToken = request.getHeader(AUTH_HEADER).substring(BEARER.length());
+        if (!Objects.requireNonNull(tokenWrapper.getTokenForPath(request.getServletPath()), "No token for provided URI")
+                .equals(requestToken)) {
             throw new AuthenticationException("Illegal token provided");
         }
-        throw new NullPointerException("Provided authorization header is null or empty");
+        return true;
     }
 }

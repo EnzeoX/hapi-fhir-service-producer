@@ -1,14 +1,15 @@
 package com.job.testsender.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
-public class LoginModel {
+public class AuthResponse {
 
-    private String username;
-    private String password;
+    private String token;
 }

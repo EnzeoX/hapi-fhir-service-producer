@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class MainController {
 
@@ -21,7 +21,7 @@ public class MainController {
         return ResponseEntity.status(200).body("Working");
     }
 
-    @PostMapping(value = "process-bundle", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/process-bundle", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> acquireMessage(@NonNull @RequestBody String message) {
         this.fhirBundleMessageHandler.collectAndProcessBundle(message);
         return ResponseEntity.ok("Bundle processed");

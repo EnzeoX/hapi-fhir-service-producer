@@ -1,28 +1,32 @@
 package com.job.testsender.utils;
 
-import com.job.testsender.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtUtils {
 
-    private final String SECRET_KEY = "23576d72294b643f624e6d3a737c2c7561633942306f64334c644e365f415e5f";
-    private final long accessTokenValidity = 60*60*1000;
+    @Value("${secret-key.value}")
+    private String SECRET_KEY;
 
-    private final JwtParser jwtParser;
+    @Value("${token.access.validity}")
+    private long accessTokenValidity;
 
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
@@ -47,7 +51,7 @@ public class JwtUtils {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date(System.currentTimeMillis()));
+        return new Date(System.currentTimeMillis()).before(extractExpiration(token));
     }
 
     private Date extractExpiration(String token) {

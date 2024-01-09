@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Builder
-@Table(name = "users")
+@Table(name = "security_users")
 @AllArgsConstructor()
 @NoArgsConstructor
 public class User implements Serializable, UserDetails {

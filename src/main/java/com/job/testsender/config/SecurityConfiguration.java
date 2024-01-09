@@ -39,10 +39,10 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
-//        http // add jwt filter
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(filterException, LogoutFilter.class)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http // add jwt filter
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(filterException, LogoutFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

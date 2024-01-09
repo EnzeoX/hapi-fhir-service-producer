@@ -88,6 +88,11 @@
             <artifactId>hapi-fhir-structures-r4</artifactId>
             <version>6.10.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <!--<version> (managed by Spring Boot)42.2.5 </version> -->
+        </dependency>
     </dependencies>
 
     <build>

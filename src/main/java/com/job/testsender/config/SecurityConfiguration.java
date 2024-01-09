@@ -29,20 +29,22 @@ public class SecurityConfiguration {
         http //disable csrf
                 .csrf()
                 .disable();
-        http //set permissions
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/v1").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/v1/authentication/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1").authenticated()
-                .and();
         http //set session management
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
-//        http // add jwt filter
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(filterException, LogoutFilter.class)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http //set permissions
+                .authorizeHttpRequests()
+                .antMatchers(HttpMethod.GET,"/api/v1").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/authentication/**").permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
+                .and();
+        http // add jwt filter
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(filterException, LogoutFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

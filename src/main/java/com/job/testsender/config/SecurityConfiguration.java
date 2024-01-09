@@ -33,17 +33,16 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/v1").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/v1/authentication/**").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers(HttpMethod.POST, "/api/v1").authenticated()
                 .and();
         http //set session management
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
-        http // add jwt filter
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(filterException, LogoutFilter.class)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//        http // add jwt filter
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(filterException, LogoutFilter.class)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

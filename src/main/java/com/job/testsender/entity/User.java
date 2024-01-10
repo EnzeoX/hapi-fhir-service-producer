@@ -12,15 +12,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Builder
 @Table(name = "security_users")
 @AllArgsConstructor()
 @NoArgsConstructor
 public class User implements Serializable, UserDetails {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

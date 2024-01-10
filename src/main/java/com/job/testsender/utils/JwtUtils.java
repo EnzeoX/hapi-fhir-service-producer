@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,10 +29,20 @@ public class JwtUtils {
     @Value("${token.access.validity}")
     private long accessTokenValidity;
 
+    public JwtUtils(
+//            @Value("${secret-key.value}")
+                    String secretKey,
+//            @Value("${token.access.validity}")
+                    long tokenValidity
+    ) {
+        this.SECRET_KEY = secretKey;
+        this.accessTokenValidity = tokenValidity;
+    }
+
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(@NotNull(message = "Provided UserDetails for token generation is null") UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 

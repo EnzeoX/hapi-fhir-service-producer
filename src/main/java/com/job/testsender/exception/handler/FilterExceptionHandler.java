@@ -21,12 +21,12 @@ public class FilterExceptionHandler {
         GlobalErrorResponse errorResponse = new GlobalErrorResponse();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         switch (exceptionClass) {
+            case "ExpiredJwtException":
             case "AuthenticationException":
             case "MalformedJwtException":
                 errorResponse.setStatus("Unauthorized");
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 break;
-
             default:
                 errorResponse.setStatus("Error");
                 response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

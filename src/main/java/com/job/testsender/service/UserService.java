@@ -28,6 +28,6 @@ public class UserService implements UserDetailsService {
 
     public void saveNewUser(User user) {
         Objects.requireNonNull(user, "Provided user model is null");
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 }

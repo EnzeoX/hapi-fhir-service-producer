@@ -1,7 +1,9 @@
-FROM eclipse-temurin:21.0.1_12-jre
+FROM eclipse-temurin:17-jdk-alpine
 
 MAINTAINER Nikolay Boiko
 
-COPY target/*.war opt/app.war
+COPY ./target/app.war /usr/app/
 
-ENTRYPOINT ["java", "-jar", "opt/app.war"]
+WORKDIR /usr/app
+
+ENTRYPOINT ["java", "-jar", "app.war"]

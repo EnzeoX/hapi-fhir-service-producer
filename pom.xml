@@ -102,6 +102,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <finalName>app</finalName>
+                    <image>
+                        <name>hapi-fhir-producer</name>
+                    </image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -109,6 +112,18 @@
                         </exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <!-- Create Docker image during mvn install -->
+                        <phase>install</phase>
+                        <goals>
+                            <!-- Spring Boot use the Layered approach : to prevent creating a single fat jar, and use caching during image update -->
+                            <goal>
+                                build-image
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

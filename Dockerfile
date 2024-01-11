@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM adoptopenjdk/openjdk11:latest
 
 MAINTAINER Nikolay Boiko
 

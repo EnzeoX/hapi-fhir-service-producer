@@ -197,7 +197,7 @@ public class MainControllerTest {
     public void testAcquireMessage_badRequest() throws Exception {
         mvc.perform(post("/api/v1/process-bundle").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); //Mykola, just for you. Without body should return BadRequest 400, not 500
+                .andExpect(status().isBadRequest());
 
         verifyNoInteractions(messageHandler);
     }
@@ -210,7 +210,6 @@ public class MainControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(status().isUnauthorized());
-
         verifyNoInteractions(messageHandler);
     }
 }

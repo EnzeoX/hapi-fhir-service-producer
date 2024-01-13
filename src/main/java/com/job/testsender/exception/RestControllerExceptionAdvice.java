@@ -13,12 +13,15 @@ public class RestControllerExceptionAdvice {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception e) {
         String exceptionName = e.getClass().getSimpleName();
-        log.info("{}, {}", exceptionName, e.getMessage());
+        log.error("{}, {}", exceptionName, e.getMessage());
         switch (exceptionName) {
             case "StringIndexOutOfBoundsException":
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Provided incorrect string");
             case "NullPointerException":
+            case "IllegalArgumentException":
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            case "HttpMessageNotReadableException":
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Required request body is missing");
             case "AuthenticationException":
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
             default:

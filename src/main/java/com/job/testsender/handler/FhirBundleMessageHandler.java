@@ -9,8 +9,8 @@ import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,9 +26,13 @@ public class FhirBundleMessageHandler {
         this.parser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     }
 
-    public void collectAndProcessBundle(String message) {
-        Objects.requireNonNull(message, "Provided bundle message is null or empty");
+    public void collectAndProcessBundle(@NotNull(message = "Provided bundle message is null or empty") String message) {
+
         Bundle bundle = parser.parseResource(Bundle.class, message);
+        collectAndProcessBundle(bundle);
+    }
+
+    public void collectAndProcessBundle(@NotNull Bundle bundle) {
         List<String> finishedEncounterStringStream = bundle.getEntry().stream()
                 .filter(entry -> entry.getResource().getResourceType() == ResourceType.Encounter)
                 .map(entry -> (Encounter) entry.getResource())

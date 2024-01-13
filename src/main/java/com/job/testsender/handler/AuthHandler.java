@@ -42,7 +42,7 @@ public class AuthHandler {
                 )
         );
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
-        return authenticateUser(userDetails);
+        return userDetails != null ? authenticateUser(userDetails) : null;
     }
 
     private AuthResponse authenticateUser(UserDetails user) {

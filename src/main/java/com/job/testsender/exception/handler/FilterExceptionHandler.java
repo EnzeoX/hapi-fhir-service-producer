@@ -22,8 +22,9 @@ public class FilterExceptionHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         switch (exceptionClass) {
             case "ExpiredJwtException":
-            case "AuthenticationException":
             case "MalformedJwtException":
+            case "AuthenticationException":
+            case "UnauthorizedUserException":
                 errorResponse.setStatus("Unauthorized");
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 break;

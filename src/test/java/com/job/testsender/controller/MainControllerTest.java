@@ -139,7 +139,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.job.testsender.handler.FhirBundleMessageHandler;
 import com.job.testsender.service.UserService;
@@ -182,6 +182,15 @@ public class MainControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    public void testNullBody() throws Exception {
+        mvc.perform(post("/api/v1/process-bundle").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Required request body is missing"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     public void testAcquireMessage() throws Exception {
         String body = "test message";
         mvc.perform(post("/api/v1/process-bundle").with(csrf())
@@ -196,9 +205,9 @@ public class MainControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void testAcquireMessage_badRequest() throws Exception {
         mvc.perform(post("/api/v1/process-bundle").with(csrf())
+                .content("{}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-
         verifyNoInteractions(messageHandler);
     }
 

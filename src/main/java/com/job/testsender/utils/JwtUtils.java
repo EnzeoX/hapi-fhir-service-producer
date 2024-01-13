@@ -29,16 +29,6 @@ public class JwtUtils {
     @Value("${token.access.validity}")
     private long accessTokenValidity;
 
-    public JwtUtils(
-//            @Value("${secret-key.value}")
-                    String secretKey,
-//            @Value("${token.access.validity}")
-                    long tokenValidity
-    ) {
-        this.SECRET_KEY = secretKey;
-        this.accessTokenValidity = tokenValidity;
-    }
-
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 

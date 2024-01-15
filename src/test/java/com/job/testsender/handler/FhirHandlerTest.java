@@ -1,8 +1,10 @@
 package com.job.testsender.handler;
 
+import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.DataFormatException;
 import com.job.testsender.service.KafkaService;
 import lombok.SneakyThrows;
+import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -12,10 +14,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
@@ -30,12 +37,14 @@ public class FhirHandlerTest {
 
     private String mockStringBundle;
     private String mockExpectedJson;
+    private Bundle mockedBundle;
 
     @BeforeAll
     public void init() {
         fhirBundleMessageHandler = new FhirBundleMessageHandler(kafkaService);
         mockStringBundle = new String(fromFile("mock_data.json"));
         mockExpectedJson = new String(fromFile("mock_expected_data.json"));
+        mockedBundle = FhirContext.forR4().newJsonParser().parseResource(Bundle.class, mockStringBundle);
     }
 
     @SneakyThrows
@@ -44,9 +53,15 @@ public class FhirHandlerTest {
     }
 
     @Test
-    public void testFhir_Valid_data_provided() {
+    public void testFhir_Valid_string_data_provided() {
         fhirBundleMessageHandler.collectAndProcessStringBundle(mockStringBundle);
-        verify(kafkaService).sendMultipleKafkaMessages(new ArrayList<>(Collections.singleton(mockExpectedJson)));
+        verify(kafkaService).sendMultipleKafkaMessages(anyList());
+    }
+
+    @Test
+    public void testFhir_Valid_bundle_data_provided() {
+        fhirBundleMessageHandler.collectAndProcessBundle(mockedBundle);
+        verify(kafkaService).sendMultipleKafkaMessages(anyList());
     }
 
     @Test

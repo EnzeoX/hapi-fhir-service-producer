@@ -18,6 +18,7 @@ public class RestControllerExceptionAdvice {
             case "StringIndexOutOfBoundsException":
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Provided incorrect string");
             case "NullPointerException":
+            case "DataFormatException" :
             case "IllegalArgumentException":
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             case "HttpMessageNotReadableException":

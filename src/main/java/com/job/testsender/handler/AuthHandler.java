@@ -46,8 +46,6 @@ public class AuthHandler {
     }
 
     private AuthResponse authenticateUser(UserDetails user) {
-        return AuthResponse.builder()
-                .token(jwtUtils.generateToken(user))
-                .build();
+        return new AuthResponse(jwtUtils.generateToken(user));
     }
 }

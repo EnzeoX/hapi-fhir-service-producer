@@ -1,7 +1,6 @@
 package com.job.testsender.repository;
 
 import com.job.testsender.entity.User;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

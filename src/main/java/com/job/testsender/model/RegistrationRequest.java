@@ -1,13 +1,11 @@
 package com.job.testsender.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@RequiredArgsConstructor
 public class RegistrationRequest {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 }

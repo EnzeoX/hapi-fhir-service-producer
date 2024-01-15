@@ -1,14 +1,12 @@
 package com.job.testsender.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthRequest {
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 }

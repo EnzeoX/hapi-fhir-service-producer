@@ -1,11 +1,8 @@
 package com.job.testsender.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.job.testsender.entity.User;
 import com.job.testsender.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,18 +10,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
     @Autowired
     private UserRepository userRepository;
     private UserService userService;
 
-    @BeforeEach
+    @BeforeAll
     public void init() {
         this.userService = new UserService(userRepository);
         createUsers();
+    }
+
+    @Test
+    @Order(1)
+    public void testSaveNewUser() {
+        User user = new User(5L, "newUsername", "newPassword", User.Role.USER);
+        assertAll(
+                () -> assertDoesNotThrow(() -> userService.saveNewUser(user)),
+                () -> assertEquals(user, userService.loadUserByUsername("newUsername"))
+        );
     }
 
     @Test
@@ -44,14 +55,7 @@ public class UserServiceTest {
         assertEquals("User not found", ex.getMessage());
     }
 
-    @Test
-    public void testSaveNewUser() {
-        User user = new User(5L, "newUsername", "newPassword", User.Role.USER);
-        assertAll(
-                () -> assertDoesNotThrow(() -> userService.saveNewUser(user)),
-                () -> assertEquals(user, userService.loadUserByUsername("newUsername"))
-        );
-    }
+
 
     @Test
     public void testSaveNewUser_alreadyExist() {
@@ -61,7 +65,6 @@ public class UserServiceTest {
                 .password("password1")
                 .role(User.Role.USER)
                 .build();
-
         assertThrows(DataIntegrityViolationException.class,
                 () -> userService.saveNewUser(user));
     }

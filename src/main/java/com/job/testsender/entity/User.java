@@ -15,8 +15,8 @@ import java.util.List;
 @Data
 @Entity
 @Builder
-@Table(name = "security_users")
-@AllArgsConstructor()
+@Table(name = "security_users", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
+@AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
 

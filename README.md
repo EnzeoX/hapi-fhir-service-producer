@@ -34,7 +34,7 @@ Response with just simple `"Working"` message.
 
 ```json
     {
-        "token": TOKEN
+        "token": STRING
     }
 ```
 On success - json response with `token` attribute value of JWT token.
@@ -59,7 +59,7 @@ On success - json response with `token` attribute value of JWT token.
 
 ```json
     {
-        "token": TOKEN
+        "token": STRING
     }
 ```
 

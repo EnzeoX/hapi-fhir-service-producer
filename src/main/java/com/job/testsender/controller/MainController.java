@@ -21,7 +21,7 @@ public class MainController {
         return ResponseEntity.status(200).body("Working");
     }
 
-    @PostMapping(value = "/process-bundle", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/process-bundle", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> acquireMessage(@NonNull @RequestBody String message) {
         if (message.equals("{}")) throw new IllegalArgumentException("Provided empty JSON");
         this.fhirBundleMessageHandler.collectAndProcessStringBundle(message);

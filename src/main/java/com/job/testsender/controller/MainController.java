@@ -10,15 +10,21 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class MainController {
 
     private final FhirBundleMessageHandler fhirBundleMessageHandler;
 
-    @PostMapping(value = "process-bundle", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping
+    public ResponseEntity<String> getInfo() {
+        return ResponseEntity.status(200).body("Working");
+    }
+
+    @PostMapping(value = "/process-bundle", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> acquireMessage(@NonNull @RequestBody String message) {
-        this.fhirBundleMessageHandler.collectAndProcessBundle(message);
+        if (message.equals("{}")) throw new IllegalArgumentException("Provided empty JSON");
+        this.fhirBundleMessageHandler.collectAndProcessStringBundle(message);
         return ResponseEntity.ok("Bundle processed");
     }
 }
